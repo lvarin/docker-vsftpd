@@ -29,6 +29,15 @@ if [ "$PASV_ADDRESS" = "**IPv4**" ]; then
     export PASV_ADDRESS=$(/sbin/ip route|awk '/default/ { print $3 }')
 fi
 
+# If TLS is defined, create a fake certificate and configure it
+if [ "$TLS" != "**Boolean**" ]; then
+  openssl req -x509 -newkey rsa:4096 -nodes -keyout /etc/vsftpd/key.pem -out /etc/vsftpd/cert.pem -days 10000 -subj "/CN=$(hostname)"
+  #
+  echo "ssl_enable=YES" >> /etc/vsftpd/vsftpd.conf
+  echo "rsa_cert_file=/etc/vsftpd/cert.pem" >> /etc/vsftpd/vsftpd.conf
+  echo "rsa_private_key_file=/etc/vsftpd/key.pem" >> /etc/vsftpd/vsftpd.conf
+fi
+
 echo "pasv_address=${PASV_ADDRESS}" >> /etc/vsftpd/vsftpd.conf
 echo "pasv_max_port=${PASV_MAX_PORT}" >> /etc/vsftpd/vsftpd.conf
 echo "pasv_min_port=${PASV_MIN_PORT}" >> /etc/vsftpd/vsftpd.conf
