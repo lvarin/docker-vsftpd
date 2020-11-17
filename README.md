@@ -123,6 +123,16 @@ This image uses environment variables to allow the configuration of some paramet
 * Description: Set to YES if you want to disable the PORT security check that ensures that outgoing data connections can only connect to the client. Only enable if you know what you are doing! Legitimate use for this is to facilitate FXP support.
 
 ----
+* Variable name: `TLS`
+* Default value: <Disabled>
+* Accepted values: True
+* Description: Set to True if you want to enable TLS security. The hostname used will be the value of `TLS_HOSTNAME`.
+----
+* Variable name: `TLS_HOSTNAME`
+* Default value: The value of the internal docker hostname
+* Accepted values: Any FQDN
+* Description: Set to the value of the FQDN you want the certificate to be created.
+----
 
 Exposed ports and volumes
 ----
